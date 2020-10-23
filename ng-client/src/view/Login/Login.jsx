@@ -1,32 +1,28 @@
-import React, { useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import { Form, Button, Card, Alert } from 'react-bootstrap';
 import { useAuth } from '../Context/AuthContext';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom'
 
-export const Signup = () => {
+export const Login = () => {
     const [err, setErr] = useState(''),
         [loading, setLoading] = useState(false),
-        {signup} = useAuth(),
+        { login  } = useAuth(),
         formMail = useRef(null),
         formPass = useRef(null),
-        formPassConfirm = useRef(null),
         history = useHistory();
-
+        
     const handleSubmit = async (ev) => {
         ev.preventDefault();
         const email = formMail.current.value,
-            pass = formPass.current.value,
-            passConfirm = formPassConfirm.current.value;
-
-        if(pass !== passConfirm) setErr('Please write password correctly'); 
+            pass  = formPass.current.value;
 
         try {
             setErr("")
             setLoading(true)
-            await signup(email, pass)
-            history.push('/login')
+            await login(email, pass)
+            history.push('/')
         } catch {
-            setErr("Failed to create an account")
+            setErr("Failed to login")
         }
 
         setLoading(false);
@@ -36,9 +32,9 @@ export const Signup = () => {
         <>
             <Card>
                 <Card.Body>
-                    <h3 className='text-center mb-4'>Sign Up</h3>
+                    <h3 className='text-center mb-4'>Login</h3>
                     {err && <Alert variant='danger'> {err} </Alert> }
-                    <Form  onSubmit={handleSubmit} >
+                    <Form onSubmit={handleSubmit} >
                         <Form.Group id='email'>
                             <Form.Label> Email </Form.Label>
                             <Form.Control type='email' required ref={ formMail } />
@@ -47,16 +43,17 @@ export const Signup = () => {
                             <Form.Label> Password</Form.Label>
                             <Form.Control type='password' ref={ formPass } />
                         </Form.Group>
-                        <Form.Group id='password-confirm'>
-                            <Form.Label> Password confirm </Form.Label>
-                            <Form.Control type='password' ref={ formPassConfirm } />
-                        </Form.Group>
-                        <Button className='w-100' disabled={loading} type='submit'> Sign Up </Button>
+                        <Button className='w-100' disabled={loading} type='submit'> Log In </Button>
+                        <Form>
+                            <div className='w-100 text-center mt-/'> 
+                                <Link to='/forgot-password'> Forgot Password ? </Link>
+                            </div>
+                        </Form>
                     </Form>
                 </Card.Body>
             </Card>
             <div className='w-100 text-center mt-2'> 
-                <Link to='/login'> Log In </Link>
+                Do you have account? <Link to='/signup'> Sign Up </Link>
             </div>
         </>
     )
