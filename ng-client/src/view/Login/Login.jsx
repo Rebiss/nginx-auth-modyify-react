@@ -1,47 +1,39 @@
-import React, { useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import { Form, Button, Card, Alert } from 'react-bootstrap';
 import { useAuth } from '../Context/AuthContext';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
-export const Signup = () => {
+export const Login = () => {
     const [err, setErr] = useState('');
     const [loading, setLoading] = useState(false);
     
     const formMail = useRef(null),
-        formPass = useRef(null),
-        formPassConfirm = useRef(null);
-    const { signup, currentUser  } = useAuth();
+        formPass = useRef(null);
+    const { login  } = useAuth();
 
     const handleSubmit = async (ev) => {
         ev.preventDefault();
         const email = formMail.current.value;
         const pass = formPass.current.value;
-        const passConfirm = formPassConfirm.current.value;
-        console.log('>>>>>ANASUN', pass, passConfirm, loading );
-
-        if(pass !== passConfirm) {
-            return setErr('Please write password correctly');
-        };
 
         try {
             setErr("")
             setLoading(true)
-            await signup(email, pass)
+            await login(email, pass)
         } catch {
-            setErr("Failed to create an account")
+            setErr("Failed to login")
         }
 
         setLoading(false);
     }
-    console.log('>>>>>>>>>>>', process.env.REACT_APP_FIREBASE_API_KEY);
+
     return (
         <>
             <Card>
                 <Card.Body>
-                    <h3 className='text-center mb-4'>Sign Up</h3>
-                    {JSON.stringify(currentUser) }
+                    <h3 className='text-center mb-4'>Login</h3>
                     {err && <Alert variant='danger'> {err} </Alert> }
-                    <Form  onSubmit={handleSubmit} >
+                    <Form onSubmit={handleSubmit} >
                         <Form.Group id='email'>
                             <Form.Label> Email </Form.Label>
                             <Form.Control type='email' required ref={ formMail } />
@@ -50,16 +42,12 @@ export const Signup = () => {
                             <Form.Label> Password</Form.Label>
                             <Form.Control type='password' ref={ formPass } />
                         </Form.Group>
-                        <Form.Group id='password-confirm'>
-                            <Form.Label> Password confirm </Form.Label>
-                            <Form.Control type='password' ref={ formPassConfirm } />
-                        </Form.Group>
-                        <Button className='w-100' disabled={loading} typr='submit'> Sign Up</Button>
+                        <Button className='w-100' disabled={loading} typr='submit'> Login</Button>
                     </Form>
                 </Card.Body>
             </Card>
             <div className='w-100 text-center mt-2'> 
-                <Link to='/login'>Log In</Link>
+                Do you have account? <Link to='/signup'> Sign Up </Link>
             </div>
         </>
     )
