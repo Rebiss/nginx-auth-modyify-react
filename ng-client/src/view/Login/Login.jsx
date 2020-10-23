@@ -4,17 +4,17 @@ import { useAuth } from '../Context/AuthContext';
 import { Link } from 'react-router-dom'
 
 export const Login = () => {
-    const [err, setErr] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState(''),
+          [loading, setLoading] = useState(false);
     
     const formMail = useRef(null),
-        formPass = useRef(null);
+          formPass = useRef(null);
     const { login  } = useAuth();
 
     const handleSubmit = async (ev) => {
         ev.preventDefault();
-        const email = formMail.current.value;
-        const pass = formPass.current.value;
+        const email = formMail.current.value,
+              pass  = formPass.current.value;
 
         try {
             setErr("")
@@ -42,7 +42,7 @@ export const Login = () => {
                             <Form.Label> Password</Form.Label>
                             <Form.Control type='password' ref={ formPass } />
                         </Form.Group>
-                        <Button className='w-100' disabled={loading} typr='submit'> Login</Button>
+                        <Button className='w-100' disabled={loading} type='submit'> Login </Button>
                     </Form>
                 </Card.Body>
             </Card>
