@@ -1,28 +1,26 @@
 import React, { useRef, useState } from 'react';
 import { Form, Button, Card, Alert } from 'react-bootstrap';
 import { useAuth } from '../Context/AuthContext';
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-export const Login = () => {
+export const RPass = () => {
     const [err, setErr] = useState(''),
+        [msg, setMsg] = useState(''),
         [loading, setLoading] = useState(false),
-        { login  } = useAuth(),
-        formMail = useRef(null),
-        formPass = useRef(null),
-        history = useHistory();
+        { resetPass  } = useAuth(),
+        formMail = useRef(null);
+
         
     const handleSubmit = async (ev) => {
         ev.preventDefault();
-        const email = formMail.current.value,
-            pass  = formPass.current.value;
-
+        const email = formMail.current.value;
+        setMsg('Check your Inbox.')
         try {
             setErr("")
             setLoading(true)
-            await login(email, pass)
-            history.push('/')
+            await resetPass(email)
         } catch {
-            setErr("Failed to login")
+            setErr("Failed to reset password")
         }
 
         setLoading(false);
@@ -32,21 +30,18 @@ export const Login = () => {
         <>
             <Card>
                 <Card.Body>
-                    <h3 className='text-center mb-4'>Login</h3>
+                    <h3 className='text-center mb-4'>Reset Password</h3>
                     {err && <Alert variant='danger'> {err} </Alert> }
+                    {msg && <Alert variant='danger'> {msg} </Alert> }
                     <Form onSubmit={handleSubmit} >
                         <Form.Group id='email'>
                             <Form.Label> Email </Form.Label>
                             <Form.Control type='email' required ref={ formMail } />
                         </Form.Group>
-                        <Form.Group id='password'>
-                            <Form.Label> Password</Form.Label>
-                            <Form.Control type='password' ref={ formPass } />
-                        </Form.Group>
-                        <Button className='w-100' disabled={loading} type='submit'> Log In </Button>
+                        <Button className='w-100' disabled={loading} type='submit'> Reset Password </Button>
                         <Form>
                             <div className='w-100 text-center mt-/'> 
-                                <Link to='/forgot-password'> Forgot Password ? </Link>
+                                <Link to='/login'> Login </Link>
                             </div>
                         </Form>
                     </Form>

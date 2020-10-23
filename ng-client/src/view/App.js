@@ -2,6 +2,9 @@ import React from 'react';
 import { Signup } from './Signup/Signup';
 import { Board } from './Board/Board';
 import { Login } from './Login/Login';
+import {CRoute} from './Route/CRoute';
+import {RPass} from './ResetPassword/RPass';
+import {UProfile} from './Profile/UProfile';
 import { Container } from 'react-bootstrap';
 import {AuthProvider} from './Context/AuthContext';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -18,9 +21,11 @@ function App() {
           <Router>
             <AuthProvider>
               <Switch>
-                {/* <Route exect path='/' component={Board} /> */}
+                <CRoute exect path='/' component={Board} />
+                <CRoute path='/update-profile' component={UProfile} />
                 <Route path='/signup' component={Signup} />
                 <Route path='/login' component={Login} />
+                <Route path='/forgot-password' component={RPass} />
               </Switch>
             </AuthProvider>
           </Router>
